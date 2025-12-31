@@ -10,35 +10,41 @@
     .block{margin-bottom:0}
     .full img{width:100%;display:block;border-radius:0}
 
-    /* ===== Amazon 主图 + 副图 ===== */
-    .product-gallery{
-      max-width:1600px;
-      margin:0 auto 24px;
-      background:#fff;
-      padding:24px 0;
-    }
-    .main-image img{
-      width:100%;
-      max-width:1600px;
-      display:block;
-      margin:0 auto;
-    }
-    .thumbs{
-      display:flex;
-      gap:12px;
-      margin-top:12px;
-      padding:0 16px;
-    }
-    .thumbs img{
-      width:80px;
-      height:80px;
-      object-fit:cover;
-      cursor:pointer;
-      border:2px solid transparent;
-    }
-    .thumbs img.active{
-      border-color:#111;
-    }
+/* ===== Amazon 主图 + 副图（紧凑版） ===== */
+.product-gallery{
+  max-width:1200px;      /* 主图整体变窄 */
+  margin:0 auto 16px;    /* 下方留白变小 */
+  background:#fff;
+  padding:16px 0;        /* 上下内边距减小 */
+}
+
+.main-image img{
+  width:100%;
+  max-width:1200px;      /* 控制主图高度 */
+  display:block;
+  margin:0 auto;
+}
+
+.thumbs{
+  display:flex;
+  gap:10px;              /* 缩略图间距缩小 */
+  margin-top:8px;        /* 缩略图更靠近主图 */
+  padding:0 12px;
+  justify-content:center;/* 居中，更像 Amazon */
+}
+
+.thumbs img{
+  width:60px;            /* 缩略图尺寸缩小 */
+  height:60px;
+  object-fit:cover;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+
+.thumbs img.active{
+  border-color:#111;
+}
+
 
     /* ===== A+ 轮播 ===== */
     .carousel{position:relative;overflow:hidden;border-radius:0;background:#fff}
@@ -167,4 +173,5 @@
 
 </body>
 </html>
+
 
