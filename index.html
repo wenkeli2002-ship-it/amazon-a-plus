@@ -10,7 +10,37 @@
     .block{margin-bottom:0}
     .full img{width:100%;display:block;border-radius:0}
 
-    /* 轮播 */
+    /* ===== Amazon 主图 + 副图 ===== */
+    .product-gallery{
+      max-width:1600px;
+      margin:0 auto 24px;
+      background:#fff;
+      padding:24px 0;
+    }
+    .main-image img{
+      width:100%;
+      max-width:1600px;
+      display:block;
+      margin:0 auto;
+    }
+    .thumbs{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      padding:0 16px;
+    }
+    .thumbs img{
+      width:80px;
+      height:80px;
+      object-fit:cover;
+      cursor:pointer;
+      border:2px solid transparent;
+    }
+    .thumbs img.active{
+      border-color:#111;
+    }
+
+    /* ===== A+ 轮播 ===== */
     .carousel{position:relative;overflow:hidden;border-radius:0;background:#fff}
     .track{display:flex;transition:transform .5s ease}
     .slide{min-width:100%}
@@ -18,29 +48,45 @@
     .btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:20px;cursor:pointer}
     .prev{left:12px}.next{right:12px}
     .dots{
-  position:absolute;
-  left:50%;
-  bottom:10%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:8px;
-  z-index:5
-}
+      position:absolute;
+      left:50%;
+      bottom:10%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+      z-index:5
+    }
     .dot{width:10px;height:10px;border-radius:50%;background:#ccc;cursor:pointer}
     .dot.active{background:#333}
   </style>
 </head>
 <body>
+
 <div class="wrap">
 
-  <!-- 图一：1464*1200 顶部主图（不轮播） -->
+  <!-- ===== Amazon 主图 + 副图轮播 ===== -->
+  <div class="block">
+    <div class="product-gallery">
+      <div class="main-image">
+        <img id="mainImage" src="images/Main-1600.png" alt="Amazon 主图">
+      </div>
+      <div class="thumbs">
+        <img src="images/Main-1600.png" class="active">
+        <img src="images/Sub-1.png">
+        <img src="images/Sub-2.png">
+        <img src="images/Sub-3.png">
+      </div>
+    </div>
+  </div>
+
+  <!-- 图一：1464*1200 -->
   <div class="block full">
     <img src="images/Banner-1.png" alt="A+ 主图">
   </div>
 
-  <!-- 第二行：1464*600 轮播图 -->
+  <!-- 图二：1464*600 轮播 -->
   <div class="block">
-    <div class="carousel" data-carousel style="position:relative">
+    <div class="carousel" data-carousel>
       <div class="track">
         <div class="slide"><img src="images/Banner-2.png"></div>
         <div class="slide"><img src="images/Banner-2-1.png"></div>
@@ -53,19 +99,19 @@
     <div class="dots"></div>
   </div>
 
-  <!-- 第三行：1464*600 普通展示 -->
+  <!-- 图三 -->
   <div class="block full">
-    <img src="images/Banner-3.png" alt="A+ 卖点">
+    <img src="images/Banner-3.png">
   </div>
 
-  <!-- 第四行：1464*600 轮播图（统一尺寸，防止不连贯） -->
+  <!-- 图四：轮播 -->
   <div class="block">
     <div class="carousel" data-carousel>
       <div class="track">
-        <div class="slide"><img src="images/Banner-4.png" style="aspect-ratio:1464/600;object-fit:cover"></div>
-        <div class="slide"><img src="images/Banner-4-1.png" style="aspect-ratio:1464/600;object-fit:cover"></div>
-        <div class="slide"><img src="images/Banner-4-2.png" style="aspect-ratio:1464/600;object-fit:cover"></div>
-        <div class="slide"><img src="images/Banner-4-3.png" style="aspect-ratio:1464/600;object-fit:cover"></div>
+        <div class="slide"><img src="images/Banner-4.png"></div>
+        <div class="slide"><img src="images/Banner-4-1.png"></div>
+        <div class="slide"><img src="images/Banner-4-2.png"></div>
+        <div class="slide"><img src="images/Banner-4-3.png"></div>
       </div>
       <button class="btn prev">‹</button>
       <button class="btn next">›</button>
@@ -73,14 +119,25 @@
     </div>
   </div>
 
-  <!-- 第五行：1464*600 普通展示 -->
+  <!-- 图五 -->
   <div class="block full">
-    <img src="images/Banner-5.png" alt="A+ 卖点">
+    <img src="images/Banner-5.png">
   </div>
 
 </div>
 
 <script>
+  /* 主图缩略切换 */
+  const mainImage = document.getElementById('mainImage');
+  document.querySelectorAll('.thumbs img').forEach(thumb=>{
+    thumb.onclick = ()=>{
+      document.querySelectorAll('.thumbs img').forEach(t=>t.classList.remove('active'));
+      thumb.classList.add('active');
+      mainImage.src = thumb.src;
+    }
+  });
+
+  /* A+ 轮播 */
   document.querySelectorAll('[data-carousel]').forEach(carousel=>{
     const track=carousel.querySelector('.track');
     const slides=carousel.querySelectorAll('.slide');
@@ -95,13 +152,16 @@
     });
     const dots=dotsWrap.querySelectorAll('.dot');
 
-    function update(){track.style.transform=`translateX(-${i*100}%)`;dots.forEach(d=>d.classList.remove('active'));dots[i].classList.add('active');}
+    function update(){
+      track.style.transform=`translateX(-${i*100}%)`;
+      dots.forEach(d=>d.classList.remove('active'));
+      dots[i].classList.add('active');
+    }
     function go(n){i=n;update()}
     carousel.querySelector('.next').onclick=()=>{i=(i+1)%slides.length;update()}
     carousel.querySelector('.prev').onclick=()=>{i=(i-1+slides.length)%slides.length;update()}
   })
 </script>
+
 </body>
 </html>
-
-
